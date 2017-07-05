@@ -1,79 +1,51 @@
 package no.tagstory.svalbardstories;
 
-import android.app.Activity;
 import android.os.Bundle;
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.View;
 
-public class OpenExploreActivity extends Activity {
+public class OpenExploreActivity extends FragmentActivity {
 
-	private MapView mapView;
+	private static final String TAG = "OpenExploreActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_open_explore_fragment);
 
-		// Mapbox access token is configured here. This needs to be called either in your application
-		// object or in the same activity which contains the mapview.
-		Mapbox.getInstance(this, "pk.eyJ1Ijoia3lycmVtYW5uIiwiYSI6ImNqM24zbmNzYTAwMGgyeHBjMWE5a3B0dm4ifQ.v0mgMFY7TbQb_1VQRc6Y6Q");
+		// Check that the activity is using the layout version with
+		// the fragment_container FrameLayout
+		if (findViewById(R.id.fragment_explore) != null) {
 
-		// This contains the MapView in XML and needs to be called after the access token is configured.
-		setContentView(R.layout.activity_open_explore);
-
-		mapView = (MapView) findViewById(R.id.open_map);
-		mapView.onCreate(savedInstanceState);
-		mapView.getMapAsync(new OnMapReadyCallback() {
-			@Override
-			public void onMapReady(MapboxMap mapboxMap) {
-
-				// Customize map with markers, polylines, etc.
-
+			// However, if we're being restored from a previous state,
+			// then we don't need to do anything and should return or else
+			// we could end up with overlapping fragments.
+			if (savedInstanceState != null) {
+				return;
 			}
-		});
+
+			// Create a new Fragment to be placed in the activity layout
+			OpenMapFragment openMapFragment = new OpenMapFragment();
+
+			// In case this activity was started with special instructions from an
+			// Intent, pass the Intent's extras to the fragment as arguments
+			openMapFragment.setArguments(getIntent().getExtras());
+
+			// Add the fragment to the 'fragment_container' FrameLayout
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.fragment_explore, openMapFragment).commit();
+		}
 	}
 
-	// Add the mapView lifecycle to the activity's lifecycle methods
-	@Override
-	protected void onStart() {
-		super.onStart();
-		mapView.onStart();
-	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		mapView.onResume();
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		mapView.onPause();
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		mapView.onStop();
-	}
-
-	@Override
-	public void onLowMemory() {
-		super.onLowMemory();
-		mapView.onLowMemory();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		mapView.onDestroy();
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		mapView.onSaveInstanceState(outState);
+	public void switchView(View v) {
+		if (v.getId() == R.id.button_map) {
+			Log.d("OpenExploreActivity", "Map button");
+		} else if (v.getId() == R.id.button_list) {
+			Log.d("OpenExploreActivity", "List button");
+		}
 	}
 }
