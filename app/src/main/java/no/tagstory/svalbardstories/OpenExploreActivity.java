@@ -1,11 +1,12 @@
 package no.tagstory.svalbardstories;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 public class OpenExploreActivity extends FragmentActivity {
 
@@ -42,10 +43,29 @@ public class OpenExploreActivity extends FragmentActivity {
 
 
 	public void switchView(View v) {
+		Fragment fragment;
 		if (v.getId() == R.id.button_map) {
-			Log.d("OpenExploreActivity", "Map button");
+			fragment = new OpenMapFragment();
 		} else if (v.getId() == R.id.button_list) {
-			Log.d("OpenExploreActivity", "List button");
+			// fragment = new ExploreListFragment();
+			fragment = new ListFragment();
+			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"hello", "world"});
+			((ListFragment) fragment).setListAdapter(arrayAdapter);
+		} else {
+			return;
 		}
+		changeFragment(fragment);
+	}
+
+	private void changeFragment(Fragment newFragment) {
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack so the user can navigate back
+		transaction.replace(R.id.fragment_explore, newFragment);
+		transaction.addToBackStack(null);
+
+		// Commit the transaction
+		transaction.commit();
 	}
 }
