@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 public class OpenExploreActivity extends FragmentActivity {
 
 	private static final String TAG = "OpenExploreActivity";
+    private static final String OPEN_MAP_FRAGMENT_TAG = "OPEN_MAP_FRAGMENT_TAG";
+    private static final String EXPLORE_LIST_FRAGMENT_TAG = "EXPLORE_LIST_FRAGMENT_TAG";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,26 +46,35 @@ public class OpenExploreActivity extends FragmentActivity {
 
 	public void switchView(View v) {
 		Fragment fragment;
+        String tag;
 		if (v.getId() == R.id.button_map) {
-			fragment = new OpenMapFragment();
+            tag = OPEN_MAP_FRAGMENT_TAG;
+            fragment = new OpenMapFragment();
 		} else if (v.getId() == R.id.button_list) {
+            tag = EXPLORE_LIST_FRAGMENT_TAG;
 			// fragment = new ExploreListFragment();
 			fragment = new ListFragment();
-			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"hello", "world"});
+			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"hello", "world", "how" ,"I've", "missed", "you"});
 			((ListFragment) fragment).setListAdapter(arrayAdapter);
 		} else {
 			return;
 		}
-		changeFragment(fragment);
+		changeFragment(fragment, tag);
 	}
 
-	private void changeFragment(Fragment newFragment) {
+	private void changeFragment(Fragment newFragment, String tag) {
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-		// Replace whatever is in the fragment_container view with this fragment,
+        Fragment myFragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (myFragment != null && myFragment.isVisible()) {
+            // No reson to replace the same fragment
+            return;
+        }
+
+        // Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack so the user can navigate back
-		transaction.replace(R.id.fragment_explore, newFragment);
-		transaction.addToBackStack(null);
+		transaction.replace(R.id.fragment_explore, newFragment, tag);
+		// transaction.addToBackStack(null);
 
 		// Commit the transaction
 		transaction.commit();
