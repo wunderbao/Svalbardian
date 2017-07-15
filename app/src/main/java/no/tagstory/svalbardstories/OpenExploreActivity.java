@@ -26,6 +26,7 @@ public class OpenExploreActivity extends FragmentActivity {
 		setContentView(R.layout.activity_open_explore_fragment);
 
         story = StoryParser.parseStoryFromAssets(this);
+        getIntent().putExtra("STORY", story);
 
         // Check that the activity is using the layout version with
 		// the fragment_container FrameLayout

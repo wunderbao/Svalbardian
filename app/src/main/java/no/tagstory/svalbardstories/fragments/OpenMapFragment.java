@@ -1,21 +1,29 @@
 package no.tagstory.svalbardstories.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import no.tagstory.svalbardstories.R;
+import no.tagstory.svalbardstories.Story;
+import no.tagstory.svalbardstories.Tag;
+import no.tagstory.svalbardstories.TagActivity;
 
-public class OpenMapFragment extends Fragment {
+public class OpenMapFragment extends Fragment implements MapboxMap.OnMarkerClickListener {
 
 	private MapView mapView;
+    private Story story;
 
 	@Nullable
 	@Override
@@ -30,15 +38,25 @@ public class OpenMapFragment extends Fragment {
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		mapView = (MapView) getView().findViewById(R.id.open_map);
+        Bundle extras = getActivity().getIntent().getExtras();
+        story = (Story) extras.get("STORY");
+        mapView = (MapView) getView().findViewById(R.id.open_map);
 		mapView.onCreate(savedInstanceState);
 		mapView.getMapAsync(new OnMapReadyCallback() {
 			@Override
 			public void onMapReady(MapboxMap mapboxMap) {
 
-				// Customize map with markers, polylines, etc.
+                // Customize map with markers, polylines, etc.
+                mapboxMap.setCameraPosition(story.getCameraPosition());
+                for (Tag tag : story.getTags()) {
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.setPosition(tag.getLatLng())
+                            .setTitle(tag.getTitle());
+                    mapboxMap.addMarker(markerOptions);
+                }
 
-			}
+                mapboxMap.setOnMarkerClickListener(OpenMapFragment.this);
+            }
 		});
 	}
 
@@ -84,4 +102,17 @@ public class OpenMapFragment extends Fragment {
 		super.onSaveInstanceState(outState);
 		mapView.onSaveInstanceState(outState);
 	}
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        for (Tag tag : story.getTags()) {
+            if (tag.getTitle().equals(marker.getTitle())) {
+                Intent intent = new Intent(getContext(), TagActivity.class);
+                intent.putExtra("TAG", tag);
+                startActivity(intent);
+                return true;
+            }
+        }
+        return false;
+    }
 }
