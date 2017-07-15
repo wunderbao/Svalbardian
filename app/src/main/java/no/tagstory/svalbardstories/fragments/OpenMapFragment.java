@@ -1,4 +1,4 @@
-package no.tagstory.svalbardstories;
+package no.tagstory.svalbardstories.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,8 @@ import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+
+import no.tagstory.svalbardstories.R;
 
 public class OpenMapFragment extends Fragment {
 
