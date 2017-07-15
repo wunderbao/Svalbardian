@@ -5,8 +5,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+
+import no.tagstory.svalbardstories.fragments.OpenMapFragment;
+import no.tagstory.svalbardstories.utils.StoryParser;
 
 public class OpenExploreActivity extends FragmentActivity {
 
@@ -14,12 +18,16 @@ public class OpenExploreActivity extends FragmentActivity {
     private static final String OPEN_MAP_FRAGMENT_TAG = "OPEN_MAP_FRAGMENT_TAG";
     private static final String EXPLORE_LIST_FRAGMENT_TAG = "EXPLORE_LIST_FRAGMENT_TAG";
 
-	@Override
+	private Story story;
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_open_explore_fragment);
 
-		// Check that the activity is using the layout version with
+        story = StoryParser.parseStoryFromAssets(this);
+
+        // Check that the activity is using the layout version with
 		// the fragment_container FrameLayout
 		if (findViewById(R.id.fragment_explore) != null) {
 

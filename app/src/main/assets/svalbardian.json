@@ -1,0 +1,26 @@
+{
+	"UUID": "376a5490-1aec-4157-a5a7-2db8d8527cee",
+	"created_time": "1500134292",
+	"updated_time": "1500134300",
+	"author": "Bao Marianna Nguyen",
+	"title": "Svalbard",
+	"description": "A prototype for a simple guide for Svalbard",
+	"map_focus": {
+		"longitude": "15.6454751",
+		"latitude": "78.2199827"
+	},
+	"camera_zoom": "11",
+	"tags": [
+		{
+			"UUID": "",
+			"location": {
+				"longitude": "15.6454751",
+				"latitude": "78.2199817"
+			},
+			"title": "Spisshusene",
+			"description": "The houses are unique to the Longyearbyen and they have become a landmark of this northern city.",
+			"type": "attraction",
+			"image": ""
+		}
+	]
+}
