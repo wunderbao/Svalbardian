@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
+import no.tagstory.svalbardstories.fragments.ExploreListFragment;
 import no.tagstory.svalbardstories.fragments.OpenMapFragment;
 import no.tagstory.svalbardstories.utils.StoryParser;
 
@@ -61,10 +62,10 @@ public class OpenExploreActivity extends FragmentActivity {
             fragment = new OpenMapFragment();
 		} else if (v.getId() == R.id.button_list) {
             tag = EXPLORE_LIST_FRAGMENT_TAG;
-			// fragment = new ExploreListFragment();
-			fragment = new ListFragment();
-			ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"hello", "world", "how" ,"I've", "missed", "you"});
-			((ListFragment) fragment).setListAdapter(arrayAdapter);
+			fragment = new ExploreListFragment();
+			//fragment = new ListFragment();
+			//ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"hello", "world", "how" ,"I've", "missed", "you"});
+			//((ListFragment) fragment).setListAdapter(arrayAdapter);
 		} else {
 			return;
 		}

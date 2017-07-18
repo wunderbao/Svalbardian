@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
-import static android.R.attr.tag;
 
 public class TagActivity extends Activity {
 
